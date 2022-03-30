@@ -18,8 +18,10 @@ namespace AvatarList
 
             AvatarList.OnReady += () =>
             {
-                foreach (string file in Directory.EnumerateFiles("BepInEx/config/AvatarLists", "*.list").Select(x => Path.GetFileNameWithoutExtension(x)))
-                    new AvatarList(file);
+                foreach (string file in Directory.EnumerateFiles("BepInEx/config/AvatarLists", "*.list")
+                    .Reverse() 
+                    .Select(x => Path.GetFileNameWithoutExtension(x))
+                ) new AvatarList(file);
             };
         }
     }

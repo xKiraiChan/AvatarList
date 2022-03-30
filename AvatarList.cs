@@ -54,7 +54,7 @@ namespace AvatarList
 
         public AvatarList(string name)
         {
-            this.name = name;
+            this.name = StripOrdering(name);
 
             if (System.IO.File.Exists($"BepInEx/config/AvatarLists/{name}.list"))
                 avatars = System.IO.File.ReadAllLines($"BepInEx/config/AvatarLists/{name}.list").Select(x => {
@@ -65,7 +65,7 @@ namespace AvatarList
             GameObject favorites = UnityEngine.Object.Instantiate(list.gameObject, list.parent, false);
             favorites.transform.SetSiblingIndex(0);
             favorites.active = true;
-            favorites.name = "AvatarList - " + name;
+            favorites.name = "AvatarList - " + this.name;
 
             UiAvatarList.Type.GetProperties().First(x => x.PropertyType.IsEnum && x.PropertyType.DeclaringType == UiAvatarList.Type).SetValue(
                 m_GetComponent.MakeGenericMethod(UiAvatarList.Type).Invoke(favorites.transform, null),
@@ -82,7 +82,7 @@ namespace AvatarList
             Transform button = favorites.transform.Find("Button");
 
             label = favorites.transform.Find("Button").GetComponentInChildren<Text>();
-            label.text = name;
+            label.text = this.name;
 
             GameObject favorite = UnityEngine.Object.Instantiate(change, button, false);
 
@@ -146,5 +146,13 @@ namespace AvatarList
 
             Refresh();
         }
+
+        private static string StripOrdering(string x)
+        {
+            char[] chars = x.ToCharArray();
+            if (char.IsDigit(chars[0]) && char.IsDigit(chars[1]) && chars[2] == '_')
+                return x[3..];
+            else return x;
+        } 
     }
 }
