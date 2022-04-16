@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AvatarList
 {
-    [BepInPlugin(GUID, "AvatarList", "0.1.0")]
+    [BepInPlugin(GUID, "AvatarList", "0.2.0")]
     [BepInDependency(KiraiMod.Core.Plugin.GUID)]
     public class Plugin : BasePlugin
     {
